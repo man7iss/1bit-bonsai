@@ -1,0 +1,36 @@
+GGUF Verification: Bonsai 8B
+=============================
+File: Bonsai-8B.gguf
+Architecture: qwen3
+Name: Bonsai-8B
+GGUF Version: 3
+Tensors: 399 (254 Q1_0_g128, 145 F32)
+Parameters: 8,188,548,096
+File size: 1.159 GB (1,158,654,496 bytes)
+Effective bits/weight: 1.132
+
+Paper claims: 1.15 GB, 8.19B params, 1.125 bits/weight
+Delta: +0.009 GB (+0.8%), -0.001B params, +0.007 bits/weight
+
+Model config (from GGUF metadata):
+  qwen3.block_count: 36
+  qwen3.attention.head_count: 32
+  qwen3.attention.head_count_kv: 8
+  qwen3.embedding_length: 4096
+  qwen3.context_length: 65536
+
+Throughput (M1 Pro, Metal, ngl=99):
+  pp512: 287.3 tok/s (±1.5)
+  tg128: 40.9 tok/s (±0.2)
+
+Paper claims (M4 Pro 48GB, Metal):
+  pp512: 498 tok/s
+  tg128: 85 tok/s
+  Speedup vs FP16: 5.4x
+
+Our M1 Pro is ~2x slower than the paper's M4 Pro, consistent with
+the generational difference in memory bandwidth:
+  M1 Pro: 200 GB/s
+  M4 Pro: 273 GB/s
+  Ratio: 1.37x (tg is memory-bound, so 85/40.9 = 2.08x includes
+  both bandwidth and kernel efficiency differences)
